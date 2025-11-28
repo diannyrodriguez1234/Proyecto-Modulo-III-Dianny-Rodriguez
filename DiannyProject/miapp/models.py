@@ -1,9 +1,16 @@
+# ========================================================
+# PUNTO G: MODELOS DE LA APLICACIÓN WEB
+# Modelo Actividad para gestionar tareas del proyecto
+# ========================================================
+
+
 from django.db import models
+
 
 class Actividad(models.Model):
     titulo = models.CharField(max_length=200)
     descripcion = models.TextField()
-    fecha = models.DateField(default='2025-11-27')
+    fecha = models.DateField(default="2025-11-27")
     completada = models.BooleanField(default=False)
 
     def __str__(self):
