@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mis Actividades</title>
+    <style>
+      body { font-family: Arial; margin: 40px; }
+    </style>
+  </head>
+  <body>
+    <h1>📋 Mis Actividades</h1>
+
+    {% if actividades %}
+      <ul>
+        {% for actividad in actividades %}
+          <li>
+            {{ actividad.titulo }} - {{ actividad.fecha }} {% if actividad.completada %}(✓ Completada){% else %}(⏳ Pendiente){% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No hay actividades. <a href="/admin/">Agregar desde Admin</a></p>
+    {% endif %}
+
+    <hr />
+    <a href="/admin/">🔧 Admin Django</a>
+  </body>
+</html>
