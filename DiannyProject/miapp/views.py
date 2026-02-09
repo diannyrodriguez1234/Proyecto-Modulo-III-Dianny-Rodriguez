@@ -5,9 +5,9 @@
 
 
 from django.shortcuts import render
-from .models import Actividad
+from .models import Producto
 
 
-def lista_actividades(request):
-    actividades = Actividad.objects.all()
-    return render(request, "miapp/lista.html", {"actividades": actividades})
+def lista_productos(request):
+    productos = Producto.objects.all().order_by('-fecha_ingreso')
+    return render(request, "miapp/lista.html", {"productos": productos})

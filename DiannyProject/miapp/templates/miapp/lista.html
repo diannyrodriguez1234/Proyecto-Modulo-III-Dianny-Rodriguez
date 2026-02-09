@@ -1,27 +1,162 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Mis Actividades</title>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiaTech - Inventario Tecnológico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-      body { font-family: Arial; margin: 40px; }
+        :root {
+            --primary-pink: #ff85a2;
+            --secondary-purple: #9b5de5;
+            --danger-red: #f15bb5; /* Un rojo tirando a fucsia/rosado para combinar */
+            --bg-soft-pink: #fff0f3;
+        }
+        body {
+            background-color: var(--bg-soft-pink);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-pink), var(--secondary-purple)) !important;
+            border-bottom: 3px solid rgba(255,255,255,0.2);
+        }
+        .navbar-brand {
+            font-weight: 800 !important;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            border: none;
+        }
+        .table-light {
+            background-color: #f8f9fa;
+        }
+        .badge-disponible {
+            background-color: var(--secondary-purple);
+            color: white;
+        }
+        .badge-pocas {
+            background-color: var(--primary-pink);
+            color: white;
+        }
+        .badge-agotado {
+            background-color: #d90429;
+            color: white;
+        }
+        .text-primary-custom {
+            color: var(--secondary-purple) !important;
+        }
+        .btn-admin {
+            background-color: white;
+            color: var(--secondary-purple);
+            border: 2px solid white;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .btn-admin:hover {
+            background-color: transparent;
+            color: white;
+        }
+        footer {
+            color: var(--secondary-purple);
+        }
     </style>
-  </head>
-  <body>
-    <h1>📋 Mis Actividades</h1>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="bi bi-heart-fill me-2"></i>DiaTech</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link btn-admin px-3 py-1" href="/admin/" target="_blank">
+                    <i class="bi bi-lock-fill me-1"></i>Panel Admin
+                </a>
+            </div>
+        </div>
+    </nav>
 
-    {% if actividades %}
-      <ul>
-        {% for actividad in actividades %}
-          <li>
-            {{ actividad.titulo }} - {{ actividad.fecha }} {% if actividad.completada %}(✓ Completada){% else %}(⏳ Pendiente){% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No hay actividades. <a href="/admin/">Agregar desde Admin</a></p>
-    {% endif %}
+    <div class="container py-4">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold mb-2" style="color: var(--secondary-purple);">Inventario de Productos</h1>
+                <p class="lead" style="color: var(--primary-pink); font-weight: 500;">Gestión de activos tecnológicos con estilo - Módulo III</p>
+            </div>
+        </div>
 
-    <hr />
-    <a href="/admin/">🔧 Admin Django</a>
-  </body>
+        <div class="row justify-content-center">
+            {% if productos %}
+                <div class="col-lg-10">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead style="background-color: var(--bg-soft-pink);">
+                                        <tr>
+                                            <th class="ps-4 py-3">Producto</th>
+                                            <th class="py-3">Categoría</th>
+                                            <th class="text-center py-3">Existencia</th>
+                                            <th class="text-end py-3">Precio</th>
+                                            <th class="text-center pe-4 py-3">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for producto in productos %}
+                                        <tr>
+                                            <td class="ps-4 py-3">
+                                                <div class="fw-bold text-dark">{{ producto.nombre }}</div>
+                                                <small class="text-muted">{{ producto.descripcion|truncatechars:60 }}</small>
+                                            </td>
+                                            <td class="py-3">
+                                                <span class="badge rounded-pill border" style="color: var(--secondary-purple); border-color: var(--secondary-purple) !important;">
+                                                    {{ producto.get_categoria_display }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center py-3 fw-bold">
+                                                {{ producto.stock }}
+                                            </td>
+                                            <td class="text-end py-3 fw-bold text-primary-custom">
+                                                ${{ producto.precio }}
+                                            </td>
+                                            <td class="text-center pe-4 py-3">
+                                                {% if producto.stock > 10 %}
+                                                    <span class="badge badge-disponible px-3 py-2">Disponible</span>
+                                                {% elif producto.stock > 0 %}
+                                                    <span class="badge badge-pocas px-3 py-2">Pocas Unidades</span>
+                                                {% else %}
+                                                    <span class="badge badge-agotado px-3 py-2">Agotado</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <div class="card shadow-sm border-0 p-5" style="background-color: white; max-width: 600px; margin: 0 auto; border-radius: 20px;">
+                        <i class="bi bi-heart-fill fs-1 mb-3 d-block" style="color: var(--primary-pink);"></i>
+                        <h3 class="fw-bold" style="color: var(--secondary-purple);">¡Bienvenida a DiaTech!</h3>
+                        <p class="text-muted mb-4">Tu inventario está esperando por sus primeros productos tecnológicos.</p>
+                        <a href="/admin/" class="btn btn-lg text-white fw-bold shadow-sm" style="background: linear-gradient(90deg, var(--primary-pink), var(--secondary-purple)); border: none; border-radius: 12px;">
+                            Ir al Panel de Control
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <footer class="mt-5 pt-4 border-top text-center">
+            <p class="fw-bold">Desarrollado con <i class="bi bi-heart-fill" style="color: var(--primary-pink);"></i> por <strong>Dianny Rodriguez</strong></p>
+            <small class="text-muted">Ingeniería en Informática - 2026</small>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

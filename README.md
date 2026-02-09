@@ -1,7 +1,7 @@
-# Aplicación Web de Actividades – Módulo III
+# DiaTech – Gestión de Inventario Tecnológico
 
 Proyecto desarrollado para el Módulo III del subproyecto **Desarrollo de aplicaciones I**.  
-Consiste en una aplicación web con Django que permite gestionar un listado de actividades, usando modelos, vistas, plantillas y el panel de administración.
+Consiste en una aplicación web con Django que permite gestionar un inventario de activos tecnológicos, usando modelos, vistas, plantillas y el panel de administración.
 
 ---
 
